@@ -33,5 +33,5 @@ function! s:character_at_cursor()
   return matchstr(getline('.'), '\%'.col('.').'c.')
 endfunction
 
-nmap % :call <SID>matchquote()<CR>
+nmap <silent> % :call <SID>matchquote()<CR>
 
