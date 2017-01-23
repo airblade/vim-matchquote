@@ -1,0 +1,6 @@
+normal (percent) matching
+noop when 'isn't balanced'
+single quote 'works' for me
+double quote "works" for me
+backtick `works` for me
+pipe |works| for me
