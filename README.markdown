@@ -12,6 +12,8 @@ Let's say the cursor is on the nth occurrence of the quotation mark.  Then:
 - if n is odd, the cursor moves forward to the next occurrence;
 - otherwise the cursor moves backward to the previous occurrence.
 
+Please note the matchit plugin (if you use it) should be loaded before this plugin.
+
 
 ## Licence
 
