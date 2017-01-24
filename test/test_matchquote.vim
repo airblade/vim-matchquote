@@ -5,13 +5,24 @@ function s:character_at_cursor()
 endfunction
 
 
-function Test_normal_percent_matching_still_works()
+function Test_built_in_percent_motion_still_works()
   execute 'edit' s:fixture
   normal 1G0f(
 
   normal %
 
   call assert_equal(')', s:character_at_cursor())
+endfunction
+
+
+function Test_matchit_still_works()
+  execute 'edit' s:fixture
+  normal 8G0
+  let b:match_words = '\<if\>:\<end\>'
+
+  normal %
+
+  call assert_equal(10, line('.'))
 endfunction
 
 

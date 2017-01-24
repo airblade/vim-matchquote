@@ -17,8 +17,11 @@
 
 VIM="/Applications/MacVim.app/Contents/MacOS/Vim -v"
 
+# Source the matchit plugin because it always will be sourced
+# in actual use.
 $VIM -u NONE -U NONE -N                      \
   --cmd 'set rtp+=../'                       \
+  --cmd 'runtime macros/matchit.vim'         \
   --cmd 'source ../plugin/matchquote.vim'    \
   -S runner.vim                              \
   test_*.vim                                 \

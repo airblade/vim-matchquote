@@ -5,6 +5,27 @@ if exists("g:loaded_matchquote") || &cp
 endif
 let g:loaded_matchquote = 1
 
+
+" Different versions of the matchit plugin map % to
+" either a <SID> function or a <Plug> function.
+"
+" Bundled with Vim:
+"
+"     nnoremap <silent> % :<C-U>call <SID>Match_wrapper('',1,'n') <CR>
+"
+" On GitHub (benjifisher/matchit.zip)
+"
+"     nmap <silent> % <Plug>MatchitNormalForward
+"
+let s:matchit_rhs = maparg('%', 'n')
+
+if s:matchit_rhs =~# 'Match_wrapper'
+  " Make the function easier to call ourselves.
+  let s:matchit_rhs = s:matchit_rhs[6:]  " drop leading :<C-U>
+  let s:matchit_rhs = substitute(s:matchit_rhs, '<CR>', '', '')  " drop trailing <CR>
+endif
+
+
 let s:quotes = ['"', '''', '`', '|']
 
 function! s:matchquote()
@@ -24,7 +45,15 @@ function! s:matchquote()
     endif
     return
   endif
-  normal! %
+
+  if s:matchit_rhs =~? 'MatchitNormalForward'
+    execute "normal \<Plug>MatchitNormalForward"
+  elseif s:matchit_rhs =~# 'Match_wrapper'
+    execute s:matchit_rhs
+  elseif empty(s:matchit_rhs)
+    " Matchit plugin not loaded.
+    normal! %
+  endif
 endfunction
 
 " Capture character under cursor in a way that works with multi-byte

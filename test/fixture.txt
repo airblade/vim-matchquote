@@ -4,3 +4,7 @@ single quote 'works' for me
 double quote "works" for me
 backtick `works` for me
 pipe |works| for me
+
+if foo
+  bar
+end
