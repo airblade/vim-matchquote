@@ -9,13 +9,9 @@ let g:loaded_matchquote = 1
 " Different versions of the matchit plugin map % to
 " either a <SID> function or a <Plug> function.
 "
-" Bundled with Vim:
-"
 "     nnoremap <silent> % :<C-U>call <SID>Match_wrapper('',1,'n') <CR>
-"
-" On GitHub (benjifisher/matchit.zip)
-"
 "     nmap <silent> % <Plug>MatchitNormalForward
+"     nmap <silent> % <Plug>(MatchitNormalForward)
 "
 let s:matchit_rhs = maparg('%', 'n')
 
@@ -25,6 +21,9 @@ if s:matchit_rhs =~# 'Match_wrapper'
   let s:matchit_rhs = substitute(s:matchit_rhs, '<CR>', '', '')  " drop trailing <CR>
 endif
 
+if s:matchit_rhs =~# '<Plug>'
+  let s:matchit_rhs = s:matchit_rhs[6:]  " drop <Plug> so we can escape it later
+endif
 
 let s:quotes = ['"', '''', '`', '|']
 
@@ -46,13 +45,13 @@ function! s:matchquote()
     return
   endif
 
-  if s:matchit_rhs =~? 'MatchitNormalForward'
-    execute "normal \<Plug>MatchitNormalForward"
-  elseif s:matchit_rhs =~# 'Match_wrapper'
+  if s:matchit_rhs =~# 'Match_wrapper'
     execute s:matchit_rhs
   elseif empty(s:matchit_rhs)
     " Matchit plugin not loaded.
     normal! %
+  else
+    execute "normal \<Plug>".s:matchit_rhs
   endif
 endfunction
 
