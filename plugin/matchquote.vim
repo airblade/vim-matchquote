@@ -30,33 +30,49 @@ endif
 
 let s:quotes = ['"', '''', '`', '|']
 
+
 function! s:matchquote(mode)
   let c = s:character_at_cursor()
-  if index(s:quotes, c) > -1
-    " count quotation marks in line
-    let num = len(split(getline('.'), c, 1)) - 1
-    if num % 2 == 0  " only proceed if quotation marks are balanced
-      " is quotation mark under cursor odd or even?
-      let col = getpos('.')[2]
-      let num = len(split(getline('.')[0:col-1], c, 1)) - 1
-      if num % 2 == 0
-        if a:mode == 'n'
-          execute "normal! F".c
-        else
-          execute 'normal! m>F'.c.'m<gv'
-        endif
-      else
-        if a:mode == 'n'
-          execute "normal! f".c
-        else
-          execute 'normal! m<f'.c.'m>gv'
-        endif
-      endif
-    endif
+
+  if index(s:quotes, c) == -1
+    call s:fallback_to_original(a:mode)
     return
   endif
 
-  " Fallback to matchit.
+  " count quotation marks in line
+  let num = len(split(getline('.'), c, 1)) - 1
+  if num % 2 == 0  " only proceed if quotation marks are balanced
+    " is quotation mark under cursor odd or even?
+    let col = getpos('.')[2]
+    let num = len(split(getline('.')[0:col-1], c, 1)) - 1
+    if num % 2 == 0
+      if a:mode == 'n'
+        execute "normal! F".c
+      else
+        execute 'normal! m>F'.c.'m<gv'
+      endif
+    else
+      if a:mode == 'n'
+        execute "normal! f".c
+      else
+        execute 'normal! m<f'.c.'m>gv'
+      endif
+    endif
+  endif
+  return
+endfunction
+
+
+function! s:fallback_to_original(mode)
+  " Matchit plugin inactive.
+  if empty(s:matchit_n_rhs)
+    if a:mode == 'n'
+      normal! %
+    else
+      normal! gv%
+    endif
+    return
+  endif
 
   if s:matchit_n_rhs =~# 'Match_wrapper'
     if a:mode == 'n'
@@ -64,21 +80,16 @@ function! s:matchquote(mode)
     else
       execute s:matchit_x_rhs
     endif
-  elseif empty(s:matchit_n_rhs)
-    " Matchit plugin not loaded.
-    if a:mode == 'n'
-      normal! %
-    else
-      normal! gv%
-    endif
+    return
+  endif
+
+  if a:mode == 'n'
+    execute "normal \<Plug>".s:matchit_n_rhs
   else
-    if a:mode == 'n'
-      execute "normal \<Plug>".s:matchit_n_rhs
-    else
-      execute "normal gv\<Plug>".s:matchit_x_rhs
-    endif
+    execute "normal gv\<Plug>".s:matchit_x_rhs
   endif
 endfunction
+
 
 " Capture character under cursor in a way that works with multi-byte
 " characters.  Credit to http://stackoverflow.com/a/23323958/151007.
