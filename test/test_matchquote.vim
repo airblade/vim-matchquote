@@ -131,3 +131,37 @@ function Test_pipe_backwards()
   call assert_equal('|', s:character_at_cursor())
   call assert_notequal(getpos('.')[2], col)
 endfunction
+
+
+function Test_visual_mode_matchit_still_works()
+  execute 'edit' s:fixture
+  normal 1Gf(v
+
+  normal %
+
+  call assert_equal(')', s:character_at_cursor())
+endfunction
+
+
+function Test_visual_mode_single_quote_forwards()
+  execute 'edit' s:fixture
+  normal 3G0f'v
+  let col = getpos('.')[2]
+
+  normal %
+
+  call assert_equal('''', s:character_at_cursor())
+  call assert_notequal(getpos('.')[2], col)
+endfunction
+
+
+function Test_visual_mode_single_quote_backwards()
+  execute 'edit' s:fixture
+  normal 3G02f'v
+  let col = getpos('.')[2]
+
+  normal %
+
+  call assert_equal('''', s:character_at_cursor())
+  call assert_notequal(getpos('.')[2], col)
+endfunction
