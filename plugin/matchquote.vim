@@ -28,6 +28,7 @@ if s:matchit_n_rhs =~# '<Plug>'
   let s:matchit_x_rhs = s:matchit_x_rhs[6:]
 endif
 
+
 let s:quotes = ['"', '''', '`', '|']
 
 
@@ -49,17 +50,9 @@ function! s:matchquote(mode)
   let num = len(split(getline('.')[0:col-1], c, 1)) - 1
 
   if num % 2 == 0
-    if a:mode == 'n'
-      execute "normal! F".c
-    else
-      execute 'normal! m>F'.c.'m<gv'
-    endif
+    execute 'normal!' a:mode == 'n' ? 'F'.c : 'm>F'.c.'m<gvo'
   else
-    if a:mode == 'n'
-      execute "normal! f".c
-    else
-      execute 'normal! m<f'.c.'m>gv'
-    endif
+    execute 'normal!' a:mode == 'n' ? 'f'.c : 'm<f'.c.'m>gv'
   endif
 endfunction
 
@@ -97,6 +90,7 @@ endfunction
 function! s:character_at_cursor()
   return matchstr(getline('.'), '\%'.col('.').'c.')
 endfunction
+
 
 nmap <silent> %      :call <SID>matchquote('n')<CR>
 xmap <silent> % :<C-U>call <SID>matchquote('x')<CR>
