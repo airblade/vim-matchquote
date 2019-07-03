@@ -39,27 +39,28 @@ function! s:matchquote(mode)
     return
   endif
 
-  " count quotation marks in line
   let num = len(split(getline('.'), c, 1)) - 1
-  if num % 2 == 0  " only proceed if quotation marks are balanced
-    " is quotation mark under cursor odd or even?
-    let col = getpos('.')[2]
-    let num = len(split(getline('.')[0:col-1], c, 1)) - 1
-    if num % 2 == 0
-      if a:mode == 'n'
-        execute "normal! F".c
-      else
-        execute 'normal! m>F'.c.'m<gv'
-      endif
+  if num % 2 == 1
+    return
+  endif
+
+  " is quotation mark under cursor odd or even?
+  let col = getpos('.')[2]
+  let num = len(split(getline('.')[0:col-1], c, 1)) - 1
+
+  if num % 2 == 0
+    if a:mode == 'n'
+      execute "normal! F".c
     else
-      if a:mode == 'n'
-        execute "normal! f".c
-      else
-        execute 'normal! m<f'.c.'m>gv'
-      endif
+      execute 'normal! m>F'.c.'m<gv'
+    endif
+  else
+    if a:mode == 'n'
+      execute "normal! f".c
+    else
+      execute 'normal! m<f'.c.'m>gv'
     endif
   endif
-  return
 endfunction
 
 
