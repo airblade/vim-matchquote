@@ -5,6 +5,9 @@ if exists("g:loaded_matchquote") || &cp
 endif
 let g:loaded_matchquote = 1
 
+if has('nvim')
+  let loaded_matchit = 1
+endif
 
 " Different versions of the matchit plugin map % to
 " either a <SID> function or a <Plug> function.
