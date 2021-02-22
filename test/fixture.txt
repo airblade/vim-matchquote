@@ -8,3 +8,5 @@ pipe |works| for me
 if foo
   bar
 end
+
+hi "hello" 'goodbye' bye

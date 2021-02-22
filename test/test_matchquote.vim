@@ -181,3 +181,33 @@ function Test_visual_mode_single_quote_backwards()
   call assert_equal('''', s:character_at_cursor())
   call assert_notequal(getpos('.')[2], col)
 endfunction
+
+
+function Test_visual_mode_extend_selection_forwards()
+  execute 'edit' s:fixture
+
+  normal 12Gf"v%
+  call assert_equal(10, getpos('.')[2])
+  call assert_equal(4,  getpos("'<")[2])
+  call assert_equal(10, getpos("'>")[2])
+
+  normal f'%
+  call assert_equal(20, getpos('.')[2])
+  call assert_equal(4,  getpos("'<")[2])
+  call assert_equal(20, getpos("'>")[2])
+endfunction
+
+
+function Test_visual_mode_extend_selection_backwards()
+  execute 'edit' s:fixture
+
+  normal 12G$F'v%
+  call assert_equal(12, getpos('.')[2])
+  call assert_equal(12, getpos("'<")[2])
+  call assert_equal(20, getpos("'>")[2])
+
+  normal F"%
+  call assert_equal(4,  getpos('.')[2])
+  call assert_equal(4,  getpos("'<")[2])
+  call assert_equal(20, getpos("'>")[2])
+endfunction

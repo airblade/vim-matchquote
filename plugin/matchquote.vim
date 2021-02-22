@@ -43,7 +43,11 @@ let s:quotes = ['"', '''', '`', '|']
 
 
 function! s:matchquote(mode)
+  if a:mode == 'x'
+    normal! gv
+  endif
   let c = s:character_at_cursor()
+  execute "normal! \<Esc>"
 
   if index(s:quotes, c) == -1
     call s:fallback_to_original(a:mode)
@@ -60,9 +64,9 @@ function! s:matchquote(mode)
   let num = len(split(getline('.')[0:col-1], c, 1)) - 1
 
   if num % 2 == 0
-    execute 'normal!' a:mode == 'n' ? 'F'.c : 'm>F'.c.'m<gvo'
+    execute 'normal!' a:mode == 'n' ? 'F'.c : 'F'.c.'m>gv'
   else
-    execute 'normal!' a:mode == 'n' ? 'f'.c : 'm<f'.c.'m>gv'
+    execute 'normal!' a:mode == 'n' ? 'f'.c : 'f'.c.'m>gv'
   endif
 endfunction
 
