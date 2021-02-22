@@ -67,6 +67,8 @@ function! s:matchquote(mode)
 endfunction
 
 
+" NOTE: see here for an alternative way to invoke an overridden mapping:
+" https://vi.stackexchange.com/a/27763/1643
 function! s:fallback_to_original(mode)
   " Matchit plugin inactive.
   if empty(s:matchit_n_rhs)
