@@ -63,11 +63,8 @@ function! s:matchquote(mode)
   let col = getpos('.')[2]
   let num = len(split(getline('.')[0:col-1], c, 1)) - 1
 
-  if num % 2 == 0
-    execute 'normal!' a:mode == 'n' ? 'F'.c : 'F'.c.'m>gv'
-  else
-    execute 'normal!' a:mode == 'n' ? 'f'.c : 'f'.c.'m>gv'
-  endif
+  let mvmt = num % 2 == 0 ? 'F' : 'f'
+  execute 'normal!' a:mode == 'n' ? mvmt.c : mvmt.c.'m>gv'
 endfunction
 
 
