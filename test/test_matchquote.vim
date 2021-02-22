@@ -37,6 +37,22 @@ function Test_noop_when_unmatched()
 endfunction
 
 
+function Test_noremap()
+  nmap : ,
+
+  execute 'edit' s:fixture
+  normal 3G0f'
+  let col = getpos('.')[2]
+
+  normal %
+
+  call assert_equal('''', s:character_at_cursor())
+  call assert_notequal(getpos('.')[2], col)
+
+  unmap :
+endfunction
+
+
 function Test_single_quote_forwards()
   execute 'edit' s:fixture
   normal 3G0f'

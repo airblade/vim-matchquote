@@ -102,6 +102,6 @@ function! s:character_at_cursor()
 endfunction
 
 
-nmap <silent> %      :call <SID>matchquote('n')<CR>
-xmap <silent> % :<C-U>call <SID>matchquote('x')<CR>
+nnoremap <silent> %      :call <SID>matchquote('n')<CR>
+xnoremap <silent> % :<C-U>call <SID>matchquote('x')<CR>
 
