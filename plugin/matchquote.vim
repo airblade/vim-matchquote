@@ -108,3 +108,9 @@ endfunction
 nnoremap <silent> %      :call <SID>matchquote('n')<CR>
 xnoremap <silent> % :<C-U>call <SID>matchquote('x')<CR>
 
+if empty(maparg('i<Bar>', 'x')) && empty(maparg('a<Bar>', 'x'))
+  xnoremap i<Bar> :<C-U>normal! T<Bar>vt<Bar><CR>
+  onoremap i<Bar> :normal vi<Bar><CR>
+  xnoremap a<Bar> :<C-U>normal! F<Bar>vf<Bar><CR>
+  onoremap a<Bar> :normal va<Bar><CR>
+endif
