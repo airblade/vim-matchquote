@@ -211,3 +211,11 @@ function Test_visual_mode_extend_selection_backwards()
   call assert_equal(4,  getpos("'<")[2])
   call assert_equal(20, getpos("'>")[2])
 endfunction
+
+
+function Test_N_percent_motion()
+  execute 'edit' s:fixture
+
+  normal 50%
+  call assert_equal(6, line('.'))
+endfunction
