@@ -6,7 +6,7 @@ endfunction
 
 
 function SetUp()
-  execute 'edit' s:fixture
+  execute 'edit!' s:fixture
 endfunction
 
 
@@ -202,4 +202,64 @@ endfunction
 function Test_N_percent_motion()
   normal 50%
   call assert_equal(6, line('.'))
+endfunction
+
+
+function Test_operator_pending_bracket_forwards()
+  normal 1Gf(d%
+  call assert_equal('normal  matching', getline(1))
+endfunction
+
+
+function Test_operator_pending_bracket_backwards()
+  normal 1Gf)d%
+  call assert_equal('normal  matching', getline(1))
+endfunction
+
+
+function Test_operator_pending_single_quote_forwards()
+  normal 3Gf'd%
+  call assert_equal('single quote  for me', getline(3))
+endfunction
+
+
+function Test_operator_pending_single_quote_backwards()
+  normal 3G2f'd%
+  call assert_equal('single quote  for me', getline(3))
+endfunction
+
+
+function Test_operator_pending_double_quote_forwards()
+  normal 4Gf"d%
+  call assert_equal('double quote  for me', getline(4))
+endfunction
+
+
+function Test_operator_pending_double_quote_backwards()
+  normal 4G2f"d%
+  call assert_equal('double quote  for me', getline(4))
+endfunction
+
+
+function Test_operator_pending_backtick_forwards()
+  normal 5Gf`d%
+  call assert_equal('backtick  for me', getline(5))
+endfunction
+
+
+function Test_operator_pending_backtick_backwards()
+  normal 5G2f`d%
+  call assert_equal('backtick  for me', getline(5))
+endfunction
+
+
+function Test_operator_pending_pipe_forwards()
+  normal 6Gf|d%
+  call assert_equal('pipe  for me', getline(6))
+endfunction
+
+
+function Test_operator_pending_pipe_backwards()
+  normal 6G2f|d%
+  call assert_equal('pipe  for me', getline(6))
 endfunction
