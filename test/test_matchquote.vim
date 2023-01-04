@@ -263,3 +263,12 @@ function Test_operator_pending_pipe_backwards()
   normal 6G2f|d%
   call assert_equal('pipe  for me', getline(6))
 endfunction
+
+
+function Test_mark_set()
+  normal 3Gf'%`'
+  call assert_equal(14, getcurpos()[2])
+
+  normal v%`'
+  call assert_equal(14, getcurpos()[2])
+endfunction

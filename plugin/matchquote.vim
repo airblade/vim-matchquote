@@ -43,6 +43,8 @@ let s:quotes = ['"', '''', '`', '|']
 
 
 function! s:matchquote(mode)
+  normal! m'
+
   if a:mode == 'x'
     normal! gv
   endif
